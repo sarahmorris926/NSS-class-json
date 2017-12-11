@@ -1,38 +1,46 @@
 
+console.log("First line in JS file", Date.now());
 
-// create a new request object
+// 1. create a new request object
 let myRequest = new XMLHttpRequest();
 
 
-function executeThisIfXHRFails () {
-  console.log("An error has occurred while transferring this data");
+// 2. Create callbacks
+function executeThisIfXHRFails() {
+  console.log("An error occured while transferring the data");
 }
 
 function executeThisAfterFileIsLoaded() {
+  // console.log("myRequest", myRequest);
   console.log("event.target", event.target);
-  var data = JSON.parse(event.target.responseText);
-  console.og("data", data);
+  // JSON parse will turn our JSON string into a JS object
+  var data = JSON.parse(this.responseText); // can also use "event.target.responseText" instead of this
+  console.log("data", data);
   outputSongs(data.songs);
 }
 
-
-// Setup event listeners for completed request and aborted request
-myRequest.addEventListener("error", executeThisAfterFileIsLoaded);
+// 3. setup event listeners for completed request and aborted request
+myRequest.addEventListener("load", executeThisAfterFileIsLoaded);
 myRequest.addEventListener("error", executeThisIfXHRFails);
-
 
 // CRUD
 // Create Retrieve Update Destroy
 
+// 4. Tell it which HTTP verb to use: GET, POST, PUT, DELETE, PATCH
+myRequest.open("GET", "songs.json");
 
-// Tell it which HTTP verb to use: GET, POST, PUT, DELETE, PATCH
-myRequest.open(“GET”, “songs.json”);
-// Go get it boy!
+// if you have API... 
+myRequest.open(
+  "GET",
+  // "http://api.website.com/......" 
+);
+
+
+// 5. Go get it, boy!
 myRequest.send();
 
-
-//DOM manipulation stuff
-function outputSong(songsArr) {
+// DOM manipulation stuff
+function outputSongs(songsArr) {
   let songList = document.getElementById("song-list");
   songsArr.forEach(function(song) {
     console.log("song title", song.title);
@@ -40,4 +48,6 @@ function outputSong(songsArr) {
   });
 }
 
-console.log("Last line in JS file", Date.now());
+console.log("Last Line in JS file", Date.now());
+
+
